@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Engineering Student Portfolio</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Arial", sans-serif;
+        line-height: 1.6;
+        background: linear-gradient(120deg, #4facfe, #00f2fe);
+        color: #333;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        background: #fff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      header h1 {
+        font-size: 24px;
+        color: #4facfe;
+      }
+
+      header nav ul {
+        display: flex;
+        list-style: none;
+      }
+
+      header nav ul li {
+        margin-left: 20px;
+      }
+
+      header nav ul li a {
+        text-decoration: none;
+        color: #333;
+        font-weight: bold;
+        transition: color 0.3s ease;
+      }
+
+      header nav ul li a:hover {
+        color: #4facfe;
+      }
+
+      .hero {
+        text-align: center;
+        padding: 50px 20px;
+      }
+
+      .hero h2 {
+        font-size: 36px;
+        color: #fff;
+      }
+
+      .hero p {
+        margin-top: 10px;
+        font-size: 18px;
+        color: #eee;
+      }
+
+      .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .section {
+        margin-top: 40px;
+        padding: 20px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .section h3 {
+        font-size: 24px;
+        color: #4facfe;
+      }
+
+      .section ul {
+        margin-top: 10px;
+        list-style: none;
+      }
+
+      .section ul li {
+        margin-bottom: 10px;
+        font-size: 16px;
+        color: #333;
+      }
+
+      footer {
+        text-align: center;
+        margin-top: 40px;
+        padding: 10px 0;
+        background: #4facfe;
+        color: #fff;
+        font-size: 14px;
+      }
+
+      footer a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Kanad Kulkarni</h1>
+      <nav>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <div class="hero">
+      <h2>Welcome to My Portfolio</h2>
+      <p>
+        I'm an engineering student passionate about technology and innovation.
+      </p>
+    </div>
+
+    <div class="container">
+      <section class="section" id="about">
+        <h3>About Me</h3>
+        <p>
+          I am currently pursuing my degree in engineering with a focus on
+          software development. My interests include web development and solving
+          problem of data structures and algorithms.
+        </p>
+      </section>
+
+      <section class="section" id="projects">
+        <h3>My Projects</h3>
+        <ul>
+          <li>
+            <strong>Expense Tracker:</strong> A web application to track daily
+            expenses using MERN stack.
+          </li>
+          <li>
+            <strong>Milk Dairy Management System:</strong> A web platform for
+            managing milk dairy operations with MongoDB backend.
+          </li>
+          <li>
+            <strong>Blog Application :</strong> A full-stack blog application
+            using React, Node.js, and MongoDB.
+          </li>
+        </ul>
+      </section>
+
+      <section class="section" id="skills">
+        <h3>My Skills</h3>
+        <ul>
+          <li>Programming Languages: C++, Java, Python</li>
+          <li>Web Development: HTML, CSS, JavaScript, React, Node.js</li>
+          <li>Databases: MongoDB, MySQL</li>
+          <li>Tools & Platforms: Git, GitHub, VS Code, Postman</li>
+          <li>Other Skills: Problem-solving, Team Collaboration</li>
+        </ul>
+      </section>
+
+      <section class="section" id="contact">
+        <h3>Contact Me</h3>
+        <p>
+          Email:
+          <a href="mailto:kanadkulkarni2013@gmail.com"
+            >kanadkulkarni2013@gmail.com</a
+          >
+        </p>
+        <p>
+          LinkedIn:
+          <a
+            href="https://www.linkedin.com/in/kanad-kulkarni-aabb91259/"
+            target="_blank"
+            >linkedin.com/in/kanad-kulkarni</a
+          >
+        </p>
+      </section>
+    </div>
+
+    <footer>
+      <p>&copy; 2025 Kanad Kulkarni | <a href="#">Back to Top</a></p>
+    </footer>
+  </body>
+</html>
