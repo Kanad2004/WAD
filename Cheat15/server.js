@@ -14,7 +14,7 @@ app.get("/api/products", async (req, res) => {
       path.join(__dirname, "data", "products.json"),
       "utf8"
     );
-    const products = JSON.parse(data);
+    const products = JzSON.parse(data);
     res.json(products);
   } catch (error) {
     console.error("Error reading products.json:", error);
