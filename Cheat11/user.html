@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registered Users</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background: #f0f0f0;
+      }
+      .data-container {
+        max-width: 600px;
+        margin: auto;
+        background: #fff;
+        padding: 15px;
+        border-radius: 5px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+      button {
+        padding: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="data-container">
+      <h2>Registered Users</h2>
+      <table id="userTable">
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Action</th>
+        </tr>
+      </table>
+      <button
+        onclick="window.location.href='index.html'"
+        style="margin-top: 10px"
+      >
+        Back to Login
+      </button>
+    </div>
+    <script>
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+      const table = document.getElementById("userTable");
+      users.forEach((user, index) => {
+        const row = table.insertRow();
+        row.innerHTML = `<td>${user.name}</td><td>${user.email}</td><td><button onclick="deleteUser(${index})">Delete</button></td>`;
+      });
+
+      function deleteUser(index) {
+        users.splice(index, 1);
+        localStorage.setItem("users", JSON.stringify(users));
+        window.location.reload();
+      }
+    </script>
+  </body>
+</html>

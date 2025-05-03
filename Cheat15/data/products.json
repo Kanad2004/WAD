@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Wireless Headphones",
+    "price": 7999,
+    "image": "https://img.freepik.com/free-photo/levitating-music-headphones-display_23-2149817602.jpg?t=st=1746272224~exp=1746275824~hmac=89b0a3672801e61ebdb63c6ba51e39ff929bd171ca24f8125ff7499d0b71d333&w=740"
+  },
+  {
+    "id": 2,
+    "name": "Smartwatch",
+    "price": 12999,
+    "image": "https://img.freepik.com/free-vector/smart-watch-realistic-image-black_1284-11873.jpg?ga=GA1.1.1822062076.1746272206&semt=ais_hybrid&w=740"
+  },
+  {
+    "id": 3,
+    "name": "Gaming Mouse",
+    "price": 2499,
+    "image": "https://img.freepik.com/free-photo/view-illuminated-neon-gaming-keyboard-setup-controller_23-2149529367.jpg?ga=GA1.1.1822062076.1746272206&semt=ais_hybrid&w=740"
+  },
+  {
+    "id": 4,
+    "name": "Laptop Stand",
+    "price": 1999,
+    "image": "https://via.placeholder.com/150?text=Stand"
+  }
+]
