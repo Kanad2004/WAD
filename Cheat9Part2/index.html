@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather App</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: #f0f0f0;
+        text-align: center;
+      }
+      .container {
+        max-width: 350px;
+        margin: 0 auto;
+        background: white;
+        padding: 15px;
+        border: 1px solid #ccc;
+      }
+      h1 {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 15px;
+      }
+      .search-box {
+        display: flex;
+        margin-bottom: 15px;
+      }
+      #cityInput {
+        flex: 1;
+        padding: 8px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+      }
+      #searchBtn {
+        padding: 8px 12px;
+        background: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      #weatherCard {
+        display: none;
+        padding: 10px;
+        border: 1px solid #ccc;
+      }
+      #weatherCard p {
+        margin: 5px 0;
+        font-size: 16px;
+      }
+      #errorMessage {
+        color: red;
+        font-size: 14px;
+        margin-top: 10px;
+      }
+      @media (max-width: 400px) {
+        .container {
+          padding: 10px;
+        }
+        h1 {
+          font-size: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Weather App</h1>
+      <div class="search-box">
+        <input type="text" id="cityInput" placeholder="Enter city name" />
+        <button id="searchBtn">Search</button>
+      </div>
+      <div id="weatherCard">
+        <p>City: <span id="cityName">--</span></p>
+        <p>Temperature: <span id="temperature">--°C</span></p>
+        <p>Humidity: <span id="humidity">--%</span></p>
+        <p>Conditions: <span id="conditions">--</span></p>
+      </div>
+      <div id="errorMessage"></div>
+    </div>
+    <script>
+      const cityInput = document.getElementById("cityInput");
+      const searchBtn = document.getElementById("searchBtn");
+      const weatherCard = document.getElementById("weatherCard");
+      const errorMessage = document.getElementById("errorMessage");
+
+      searchBtn.addEventListener("click", searchWeather);
+      cityInput.addEventListener(
+        "keypress",
+        (e) => e.key === "Enter" && searchWeather()
+      );
+
+      function searchWeather() {
+        const city = cityInput.value.trim().toLowerCase();
+        if (!city) {
+          errorMessage.innerHTML = "Enter a city name";
+          weatherCard.style.display = "none";
+          return;
+        }
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "weather-data.json", true);
+
+        xhr.onload = () => {
+          if (xhr.status === 200) {
+            const data = JSON.parse(xhr.responseText);
+            if (data[city]) {
+              document.getElementById("cityName").innerHTML =
+                city.charAt(0).toUpperCase() + city.slice(1);
+              document.getElementById(
+                "temperature"
+              ).innerHTML = `${data[city].temperature}°C`;
+              document.getElementById(
+                "humidity"
+              ).innerHTML = `${data[city].humidity}%`;
+              document.getElementById("conditions").innerHTML =
+                data[city].conditions;
+              weatherCard.style.display = "block";
+              errorMessage.innerHTML = "";
+            } else {
+              errorMessage.innerHTML = "City not found";
+              weatherCard.style.display = "none";
+            }
+          } else {
+            errorMessage.innerHTML = "Error fetching data";
+            weatherCard.style.display = "none";
+          }
+        };
+        // xhr.onerror = () => {
+        //   errorMessage.innerHTML = "Error fetching data";
+        //   weatherCard.style.display = "none";
+        // };
+        xhr.send();
+      }
+    </script>
+  </body>
+</html>

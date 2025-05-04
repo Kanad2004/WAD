@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Students Marks Database</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f4f4f4;
+      }
+      h1,
+      h2 {
+        text-align: center;
+        color: #333;
+      }
+      table {
+        width: 100%;
+        max-width: 1200px;
+        margin: 20px auto;
+        border-collapse: collapse;
+        background-color: #fff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      th,
+      td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+      th {
+        background-color: #4caf50;
+        color: white;
+      }
+      tr:hover {
+        background-color: #f5f5f5;
+      }
+      .controls {
+        max-width: 1200px;
+        margin: 20px auto;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .controls input,
+      .controls button {
+        padding: 10px;
+        margin: 5px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+      .controls button {
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      .controls button:hover {
+        background-color: #45a049;
+      }
+      .error,
+      .success {
+        text-align: center;
+        margin: 10px 0;
+      }
+      .error {
+        color: red;
+      }
+      .success {
+        color: green;
+      }
+      @media (max-width: 768px) {
+        table {
+          font-size: 14px;
+        }
+        .controls {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Student Marks Database</h1>
+    <div class="controls">
+      <button onclick="insertStudents()">Insert Sample Students</button>
+      <button onclick="filterDSBDAGreater20()">Students with DSBDA > 20</button>
+      <input type="number" id="updateRollNo" placeholder="Roll No to Update" />
+      <button onclick="updateMarks()">Increase Marks by 10</button>
+      <button onclick="filterAllGreater25()">
+        Students with All Subjects > 25
+      </button>
+      <button onclick="filterWADandCCLess40()">
+        Students with WAD & CC < 40
+      </button>
+      <input type="number" id="deleteRollNo" placeholder="Roll No to Delete" />
+      <button onclick="deleteStudent()">Delete Student</button>
+    </div>
+    <h2>Total Students: <span id="studentCount">0</span></h2>
+    <table id="studentTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Roll No</th>
+          <th>WAD</th>
+          <th>DSBDA</th>
+          <th>CNS</th>
+          <th>CC</th>
+          <th>AI</th>
+        </tr>
+      </thead>
+      <tbody id="studentTableBody"></tbody>
+    </table>
+    <p id="message" class="error"></p>
+
+    <script>
+      async function fetchStudents() {
+        try {
+          const response = await fetch("http://localhost:3000/api/students");
+          const data = await response.json();
+          displayStudents(data.students, data.count);
+        } catch (err) {
+          showMessage("Error fetching students: " + err.message, "error");
+        }
+      }
+
+      async function insertStudents() {
+        try {
+          const response = await fetch(
+            "http://localhost:3000/api/students/insert",
+            {
+              method: "POST",
+            }
+          );
+
+          const data = await response.json();
+
+          showMessage(`Inserted ${data.insertedCount} students`, "success");
+          fetchStudents();
+        } catch (err) {
+          showMessage("Error inserting students: " + err.message, "error");
+        }
+      }
+
+      async function filterDSBDAGreater20() {
+        try {
+          const response = await fetch(
+            "http://localhost:3000/api/students/dsbdagreater20"
+          );
+          const students = await response.json();
+          showMessage(
+            `Found ${students.length} students with DSBDA > 20`,
+            "success"
+          );
+          displayStudents(
+            students.map((s) => ({ Name: s.Name })),
+            students.length
+          );
+        } catch (error) {
+          showMessage("Error filtering students: " + error.message, "error");
+        }
+      }
+
+      async function updateMarks() {
+        const rollno = document.getElementById("updateRollNo").value;
+        if (!rollno) return showMessage("Please enter a Roll No", "error");
+        try {
+          const response = await fetch(
+            `http://localhost:3000/api/students/update/${rollno}`,
+            {
+              method: "PUT",
+            }
+          );
+          const data = await response.json();
+          showMessage(`Updated ${data.modifiedCount} student(s)`, "success");
+          fetchStudents();
+        } catch (error) {
+          showMessage("Error updating marks: " + error.message, "error");
+        }
+      }
+
+      async function filterAllGreater25() {
+        try {
+          const response = await fetch(
+            "http://localhost:3000/api/students/allgreater25"
+          );
+          const students = await response.json();
+          showMessage(
+            `Found ${students.length} students with all subjects > 25`,
+            "success"
+          );
+          displayStudents(
+            students.map((s) => ({ Name: s.Name })),
+            students.length
+          );
+        } catch (error) {
+          showMessage("Error filtering students: " + error.message, "error");
+        }
+      }
+
+      async function filterWADandCCLess40() {
+        try {
+          const response = await fetch(
+            "http://localhost:3000/api/students/wadandccless40"
+          );
+          const students = await response.json();
+          showMessage(
+            `Found ${students.length} students with WAD & CC < 40`,
+            "success"
+          );
+          displayStudents(
+            students.map((s) => ({ Name: s.Name })),
+            students.length
+          );
+        } catch (error) {
+          showMessage("Error filtering students: " + error.message, "error");
+        }
+      }
+
+      async function deleteStudent() {
+        const rollno = document.getElementById("deleteRollNo").value;
+        if (!rollno)
+          return showMessage("Please enter a Roll No to delete", "error");
+        try {
+          const response = await fetch(`/api/students/delete/${rollno}`, {
+            method: "DELETE",
+          });
+          const data = await response.json();
+          showMessage(`Deleted ${data.deletedCount} student(s)`, "success");
+          fetchStudents();
+        } catch (error) {
+          showMessage("Error deleting student: " + error.message, "error");
+        }
+      }
+
+      function displayStudents(students, count) {
+        const tableBody = document.getElementById("studentTableBody");
+        tableBody.innerHTML = "";
+        students.forEach((student) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+          <td>${student.Name}</td>
+          <td>${student.Roll_No || ""}</td>
+          <td>${student.WAD_Marks || ""}</td>
+          <td>${student.DSBDA_Marks || ""}</td>
+          <td>${student.CNS_Marks || ""}</td>
+          <td>${student.CC_Marks || ""}</td>
+          <td>${student.AI_Marks || ""}</td>
+        `;
+          tableBody.appendChild(row);
+        });
+        document.getElementById("studentCount").textContent = count;
+      }
+
+      function showMessage(message, type) {
+        const messageEl = document.getElementById("message");
+        messageEl.textContent = message;
+        messageEl.className = type;
+      }
+
+      window.onload = fetchStudents;
+    </script>
+  </body>
+</html>

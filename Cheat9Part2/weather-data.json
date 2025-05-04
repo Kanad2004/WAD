@@ -1,0 +1,42 @@
+{
+  "mumbai": {
+    "temperature": 32,
+    "humidity": 75,
+    "conditions": "Partly Cloudy"
+  },
+  "delhi": {
+    "temperature": 28,
+    "humidity": 65,
+    "conditions": "Clear Sky"
+  },
+  "bangalore": {
+    "temperature": 25,
+    "humidity": 70,
+    "conditions": "Light Rain"
+  },
+  "chennai": {
+    "temperature": 34,
+    "humidity": 80,
+    "conditions": "Sunny"
+  },
+  "kolkata": {
+    "temperature": 30,
+    "humidity": 85,
+    "conditions": "Humid"
+  },
+  "hyderabad": {
+    "temperature": 31,
+    "humidity": 68,
+    "conditions": "Cloudy"
+  },
+  "pune": {
+    "temperature": 27,
+    "humidity": 72,
+    "conditions": "Clear Sky"
+  },
+  "ahmedabad": {
+    "temperature": 35,
+    "humidity": 60,
+    "conditions": "Hot"
+  }
+}

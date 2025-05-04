@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do List</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: #f0f0f0;
+        text-align: center;
+      }
+      .container {
+        max-width: 400px;
+        margin: 0 auto;
+        background: white;
+        padding: 15px;
+        border: 1px solid #ccc;
+      }
+      h1 {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 15px;
+      }
+      .input-box {
+        display: flex;
+        margin-bottom: 15px;
+      }
+      #taskInput {
+        flex: 1;
+        padding: 8px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+      }
+      #addBtn {
+        padding: 8px 12px;
+        background: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      #taskList {
+        list-style: none;
+        padding: 0;
+      }
+      #taskList li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+      }
+      #taskList li.completed {
+        text-decoration: line-through;
+        color: #666;
+      }
+      #taskList button {
+        background: #dc3545;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+      }
+      #errorMessage {
+        color: red;
+        font-size: 14px;
+        margin-top: 10px;
+      }
+      @media (max-width: 400px) {
+        .container {
+          padding: 10px;
+        }
+        h1 {
+          font-size: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>To-Do List</h1>
+      <div class="input-box">
+        <input type="text" id="taskInput" placeholder="Enter a task" />
+        <button id="addBtn">Add</button>
+      </div>
+      <ul id="taskList"></ul>
+      <div id="errorMessage"></div>
+    </div>
+    <script>
+      const taskInput = document.getElementById("taskInput");
+      const addBtn = document.getElementById("addBtn");
+      const taskList = document.getElementById("taskList");
+      const errorMessage = document.getElementById("errorMessage");
+
+      // Load tasks on page load
+      document.addEventListener("DOMContentLoaded", loadTasks);
+
+      // Add task on button click or Enter key
+      addBtn.addEventListener("click", addTask);
+      taskInput.addEventListener(
+        "keypress",
+        (e) => e.key === "Enter" && addTask()
+      );
+
+      function loadTasks() {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "http://localhost:3000/api/tasks", true);
+        xhr.onload = () => {
+          if (xhr.status === 200) {
+            const tasks = JSON.parse(xhr.responseText);
+            taskList.innerHTML = "";
+            tasks.forEach((task) => renderTask(task));
+          } else {
+            errorMessage.innerHTML = "Error loading tasks";
+          }
+        };
+        xhr.onerror = () => (errorMessage.innerHTML = "Error loading tasks");
+        xhr.send();
+      }
+
+      function addTask() {
+        const text = taskInput.value.trim();
+        if (!text) {
+          errorMessage.innerHTML = "Enter a task";
+          return;
+        }
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://localhost:3000/api/tasks", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onload = () => {
+          if (xhr.status === 200) {
+            const task = JSON.parse(xhr.responseText);
+            renderTask(task);
+            taskInput.value = "";
+            errorMessage.innerHTML = "";
+          } else {
+            errorMessage.innerHTML = "Error adding task";
+          }
+        };
+        xhr.onerror = () => (errorMessage.innerHTML = "Error adding task");
+        xhr.send(JSON.stringify({ text }));
+      }
+
+      function toggleTask(id, li) {
+        const xhr = new XMLHttpRequest();
+        xhr.open("PUT", `http://localhost:3000/api/tasks/${id}`, true);
+        xhr.onload = () => {
+          if (xhr.status === 200) {
+            const task = JSON.parse(xhr.responseText);
+            li.classList.toggle("completed", task.completed);
+            errorMessage.innerHTML = "";
+          } else {
+            errorMessage.innerHTML = "Error updating task";
+          }
+        };
+        xhr.onerror = () => (errorMessage.innerHTML = "Error updating task");
+        xhr.send();
+      }
+
+      function deleteTask(id, li) {
+        const xhr = new XMLHttpRequest();
+        xhr.open("DELETE", `http://localhost:3000/api/tasks/${id}`, true);
+        xhr.onload = () => {
+          if (xhr.status === 200) {
+            li.remove();
+            errorMessage.innerHTML = "";
+          } else {
+            errorMessage.innerHTML = "Error deleting task";
+          }
+        };
+        xhr.onerror = () => (errorMessage.innerHTML = "Error deleting task");
+        xhr.send();
+      }
+
+      function renderTask(task) {
+        const li = document.createElement("li");
+        li.classList.toggle("completed", task.completed);
+        li.innerHTML = `
+        <span onclick="toggleTask('${task._id}', this.parentNode)">${task.text}</span>
+        <button onclick="deleteTask('${task._id}', this.parentNode)">Delete</button>
+      `;
+        taskList.appendChild(li);
+      }
+    </script>
+  </body>
+</html>

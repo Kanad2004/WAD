@@ -84,7 +84,7 @@ app.get("/api/songs", async (req, res) => {
       songs: songs,
     });
   } catch (err) {
-    res.status(500).json({
+    res.status(500).json({  
       error: "Error fetching songs",
     });
   }
